@@ -8,15 +8,25 @@ To run the conceptual Odoo installation flow, prefer using `main.py` or
 importing `OdooInstallerAgent` directly from `odoo_agent`.
 """
 
+import os
+
 from odoo_agent import OdooInstallerAgent
 
 
 def main() -> None:
     """Run a simple demo installation flow via the refactored package."""
 
-    config = {
-        # "gemini_api_key": "YOUR_REAL_GEMINI_API_KEY_HERE",
-    }
+    # Read the Gemini API key from an environment variable instead of
+    # hardcoding it in the repository.
+    api_key = os.environ.get("GEMINI_API_KEY")
+    config = {}
+    if api_key:
+        config["gemini_api_key"] = api_key
+    else:
+        print(
+            "Warning: GEMINI_API_KEY environment variable is not set. "
+            "Google API integration will fail."
+        )
 
     agent = OdooInstallerAgent(config=config)
     success = agent.execute_installation_process(

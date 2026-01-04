@@ -1,18 +1,27 @@
 """Entry point for running the Odoo installer agent.
 
 This script demonstrates how to use the `OdooInstallerAgent` in a
-standalone way. Adjust configuration values (for example the Gemini API
-key) and run this module to execute the conceptual installation flow.
+standalone way. It expects a Google Gemini API key to be provided via
+the `GEMINI_API_KEY` environment variable.
 """
+
+import os
 
 from odoo_agent import OdooInstallerAgent
 
 
 def main() -> None:
-    # Example configuration; replace values with real ones as needed.
-    config = {
-        # "gemini_api_key": "YOUR_REAL_GEMINI_API_KEY_HERE",
-    }
+    # Read the Gemini API key from an environment variable instead of
+    # hardcoding it in the repository.
+    api_key = os.environ.get("GEMINI_API_KEY")
+    config = {}
+    if api_key:
+        config["gemini_api_key"] = api_key
+    else:
+        print(
+            "Warning: GEMINI_API_KEY environment variable is not set. "
+            "Google API integration will fail."
+        )
 
     agent = OdooInstallerAgent(config=config)
     success = agent.execute_installation_process(
