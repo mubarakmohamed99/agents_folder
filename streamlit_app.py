@@ -19,10 +19,9 @@ st.set_page_config(page_title="Odoo Installer Agent", page_icon="🛠", layout="
 
 st.title("Odoo Installer Agent")
 st.write(
-    "This app runs a conceptual Odoo installation workflow using the "
-    "`OdooInstallerAgent`. It will try to detect an existing Odoo installation, "
-    "optionally download Odoo, create a basic configuration file, and perform "
-    "a conceptual Google Gemini integration."
+    "This web app **demonstrates** the Odoo installation workflow in a sandbox "
+    "using the `OdooInstallerAgent`. It does not install Odoo on your local "
+    "machine, but shows the steps, logs, and Google Gemini integration."
 )
 
 st.markdown(
@@ -34,8 +33,9 @@ st.markdown(
 )
 
 st.info(
-    "Note: This is a **conceptual** installer. It does not fully configure your "
-    "system (PostgreSQL, services, etc.) but outlines and simulates the steps."
+    "This Streamlit app runs in the cloud only. It **never** installs or "
+    "changes software on your computer. To actually install Odoo on Windows, "
+    "use the download link above and run the installer on your own machine."
 )
 
 with st.form("odoo_install_form"):
