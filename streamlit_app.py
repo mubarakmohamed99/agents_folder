@@ -25,6 +25,14 @@ st.write(
     "a conceptual Google Gemini integration."
 )
 
+st.markdown(
+    "**Want a real Windows installer?** "
+    "Download the standalone installer EXE and run it on your machine: "
+    "[Download Odoo Windows installer]"
+    "(https://github.com/mubarakmohamed99/agents_folder/releases/latest/download/installer_main.exe). "
+    "After downloading, double-click the file and follow the prompts."
+)
+
 st.info(
     "Note: This is a **conceptual** installer. It does not fully configure your "
     "system (PostgreSQL, services, etc.) but outlines and simulates the steps."
