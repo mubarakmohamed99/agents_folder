@@ -7,6 +7,7 @@ Run with:
 from __future__ import annotations
 
 import io
+import os
 import contextlib
 
 import streamlit as st
@@ -41,7 +42,8 @@ with st.form("odoo_install_form"):
         type="password",
         help=(
             "Provide this if you want the conceptual Google Gemini integration "
-            "step to succeed. Leave empty to run in demo mode."
+            "step to succeed. If left empty, the app will try to use the "
+            "`GEMINI_API_KEY` Streamlit secret or environment variable."
         ),
     )
 
@@ -51,8 +53,25 @@ if submitted:
     st.write("### Running agent...")
 
     config = {}
-    if gemini_api_key:
-        config["gemini_api_key"] = gemini_api_key
+    key_to_use = gemini_api_key
+
+    # If the user did not type a key, fall back to Streamlit secrets or
+    # environment variables so it works on Streamlit Cloud with configured
+    # secrets.
+    if not key_to_use:
+        if "GEMINI_API_KEY" in st.secrets:
+            key_to_use = st.secrets["GEMINI_API_KEY"]
+        else:
+            key_to_use = os.environ.get("GEMINI_API_KEY")
+
+    if key_to_use:
+        config["gemini_api_key"] = key_to_use
+    else:
+        st.warning(
+            "No Gemini API key provided and `GEMINI_API_KEY` secret/env is not "
+            "set. Google API integration will fail.",
+            icon="⚠️",
+        )
 
     agent = OdooInstallerAgent(config=config)
 
