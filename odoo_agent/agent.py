@@ -46,10 +46,15 @@ class OdooInstallerAgent:
 
         return download_odoo(version=version, target_dir=target_dir, download_url=download_url)
 
-    def setup_odoo(self, odoo_path: str) -> bool:
-        """Run conceptual Odoo setup steps and remember the config path."""
+    def setup_odoo(self, odoo_path: str, real_install: bool = False) -> bool:
+        """Run Odoo setup steps and remember the config path.
 
-        success, config_path = setup_odoo(odoo_path)
+        If ``real_install`` is True this will attempt to install
+        requirements and start a real Odoo server process. Otherwise it
+        behaves conceptually (no system changes).
+        """
+
+        success, config_path = setup_odoo(odoo_path, real_install=real_install)
         if success:
             self.odoo_config_path = config_path
         return success
@@ -65,13 +70,14 @@ class OdooInstallerAgent:
         self,
         odoo_version: str = "16.0",
         target_directory: str = ".",
+        real_install: bool = False,
     ) -> bool:
         """Run the full conceptual Odoo installation workflow.
 
         Steps:
         1. Detect existing Odoo executable.
         2. If not found, download and extract the specified Odoo version.
-        3. Run conceptual setup steps (dependencies, DB, config file).
+        3. Run setup steps (conceptual or real, depending on ``real_install``).
         4. Conceptually integrate Google APIs.
         """
 
@@ -99,7 +105,7 @@ class OdooInstallerAgent:
             current_odoo_path = download_path
 
         # Step 3: Setup Odoo
-        if not self.setup_odoo(current_odoo_path):
+        if not self.setup_odoo(current_odoo_path, real_install=real_install):
             print("Odoo setup failed.")
             return False
 

@@ -81,6 +81,7 @@ if submitted:
         success = agent.execute_installation_process(
             odoo_version=odoo_version,
             target_directory=target_directory,
+            real_install=False,  # Streamlit stays conceptual by default
         )
 
     logs = buffer.getvalue()

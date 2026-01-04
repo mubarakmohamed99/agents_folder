@@ -27,6 +27,7 @@ def main() -> None:
     success = agent.execute_installation_process(
         odoo_version="16.0",
         target_directory="odoo_installation",
+        real_install=True,
     )
 
     print("Result:", "SUCCESS" if success else "FAILED")
